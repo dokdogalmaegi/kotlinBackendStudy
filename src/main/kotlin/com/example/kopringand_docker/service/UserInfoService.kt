@@ -8,7 +8,9 @@ interface UserInfoService {
 
     fun loginUser(userId: String, password: String): Boolean
 
-    fun signUp(userInfoSignUpVO: UserInfoSignUpVO)
+    fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo
+
+    fun deleteUser(userId: String)
 
     fun getUserByUserId(userId: String): UserInfo
 }

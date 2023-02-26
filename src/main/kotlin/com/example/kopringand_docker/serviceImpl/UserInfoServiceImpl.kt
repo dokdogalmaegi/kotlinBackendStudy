@@ -12,7 +12,7 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository): U
 
     override fun loginUser(userId: String, password: String) = userInfoRepository.existsByUserIdAndPassword(userId, password);
 
-    override fun signUp(userInfoSignUpVO: UserInfoSignUpVO) {
+    override fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
         val ( userId: String, username: String, password:String, email: String ) = userInfoSignUpVO;
 
         if (userInfoRepository.existsByUserId(userId)) {
@@ -21,7 +21,13 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository): U
 
         val userInfoEntity: UserInfo = UserInfo(userId, username, password, email);
 
-        userInfoRepository.save(userInfoEntity);
+        return userInfoRepository.save(userInfoEntity);
+    }
+
+    override fun deleteUser(userId: String) {
+        val selectedUserInfo: UserInfo = getUserByUserId(userId);
+
+        userInfoRepository.delete(selectedUserInfo);
     }
 
     override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId);
