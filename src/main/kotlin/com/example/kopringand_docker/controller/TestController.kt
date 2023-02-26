@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class TestController(private val userInfoService: UserInfoService) {
+class UserController(private val userInfoService: UserInfoService) {
     @GetMapping("/userInfoList")
     fun getUserInfoList(): List<UserInfo> {
         return userInfoService.getUserList();
@@ -27,8 +27,6 @@ class TestController(private val userInfoService: UserInfoService) {
     fun signUp(@RequestBody userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
         val ( userId: String ) = userInfoSignUpVO;
 
-        userInfoService.signUp(userInfoSignUpVO);
-
-        return userInfoService.getUserByUserId(userId);
+        return userInfoService.signUp(userInfoSignUpVO);
     }
 }
