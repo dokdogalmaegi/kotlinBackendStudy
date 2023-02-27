@@ -16,7 +16,7 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         val (userId: String, username: String, password: String, email: String) = userInfoSignUpVO
 
         if (userInfoRepository.existsByUserId(userId)) {
-            throw RuntimeException("exists User ID")
+            throw RuntimeException("Exists user id")
         }
 
         val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
@@ -25,8 +25,11 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
     }
 
     override fun deleteUser(userId: String) {
-        val selectedUserInfo: UserInfo = getUserByUserId(userId)
+        if (!userInfoRepository.existsByUserId(userId)) {
+            throw RuntimeException("Not exists user id")
+        }
 
+        val selectedUserInfo: UserInfo = getUserByUserId(userId)
         userInfoRepository.delete(selectedUserInfo)
     }
 

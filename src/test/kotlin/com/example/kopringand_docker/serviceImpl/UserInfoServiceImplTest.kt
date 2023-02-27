@@ -48,7 +48,7 @@ class UserInfoServiceImplTest() {
         try {
             userInfoServiceImpl.signUp(userInfo)
         } catch (e: RuntimeException) {
-            assertEquals("exists User ID", e.message.toString())
+            assertEquals("Exists user id", e.message.toString())
         }
     }
 
