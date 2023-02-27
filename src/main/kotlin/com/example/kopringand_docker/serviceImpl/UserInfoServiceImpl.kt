@@ -7,28 +7,28 @@ import com.example.kopringand_docker.vo.UserInfoSignUpVO
 import org.springframework.stereotype.Service
 
 @Service
-class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository): UserInfoService {
-    override fun getUserList() = userInfoRepository.findAll();
+class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : UserInfoService {
+    override fun getUserList() = userInfoRepository.findAll()
 
-    override fun loginUser(userId: String, password: String) = userInfoRepository.existsByUserIdAndPassword(userId, password);
+    override fun loginUser(userId: String, password: String) = userInfoRepository.existsByUserIdAndPassword(userId, password)
 
     override fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
-        val ( userId: String, username: String, password:String, email: String ) = userInfoSignUpVO;
+        val (userId: String, username: String, password: String, email: String) = userInfoSignUpVO
 
         if (userInfoRepository.existsByUserId(userId)) {
-            throw Error("exists User ID");
+            throw Error("exists User ID")
         }
 
-        val userInfoEntity: UserInfo = UserInfo(userId, username, password, email);
+        val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
 
-        return userInfoRepository.save(userInfoEntity);
+        return userInfoRepository.save(userInfoEntity)
     }
 
     override fun deleteUser(userId: String) {
-        val selectedUserInfo: UserInfo = getUserByUserId(userId);
+        val selectedUserInfo: UserInfo = getUserByUserId(userId)
 
-        userInfoRepository.delete(selectedUserInfo);
+        userInfoRepository.delete(selectedUserInfo)
     }
 
-    override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId);
+    override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId)
 }

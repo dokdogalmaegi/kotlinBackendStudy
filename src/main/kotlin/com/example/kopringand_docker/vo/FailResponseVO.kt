@@ -1,4 +1,7 @@
 package com.example.kopringand_docker.vo
 
-class FailResponseVO {
-}
+data class FailResponseVO(
+    override val resultMessage: String,
+    override val status: ResultStatus,
+    val errorMessage: String
+) : ResponseVO(resultMessage, status)

@@ -4,8 +4,4 @@ enum class ResultStatus(val value: String) {
     SUCCESS("Success"),
     FAIL("Fail")
 }
-data class RespoonseVO(
-        val resultMessage: String,
-        val status: ResultStatus
-) {
-}
+abstract class ResponseVO(open val resultMessage: String, open val status: ResultStatus)
