@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userInfoService: UserInfoService) {
     @GetMapping("/userInfoList")
     fun getUserInfoList(): List<UserInfo> {
-        return userInfoService.getUserList();
+        return userInfoService.getUserList()
     }
 
     @PostMapping("/isExistsUser")
     fun isExistsUser(@RequestBody userInfoLoginVO: UserInfoLoginVO): Boolean {
-        val ( userId: String, password: String ) = userInfoLoginVO;
+        val (userId: String, password: String) = userInfoLoginVO
 
-        return userInfoService.loginUser(userId, password);
+        return userInfoService.loginUser(userId, password)
     }
 
     @PostMapping("/signUp")
     fun signUp(@RequestBody userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
-        val ( userId: String ) = userInfoSignUpVO;
+        val (userId: String) = userInfoSignUpVO
 
-        return userInfoService.signUp(userInfoSignUpVO);
+        return userInfoService.signUp(userInfoSignUpVO)
     }
 }

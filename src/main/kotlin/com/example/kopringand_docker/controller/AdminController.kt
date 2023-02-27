@@ -12,6 +12,6 @@ class AdminController(private val userInfoService: UserInfoService) {
 
     @PostMapping("/deleteUser")
     fun deleteUser(@RequestParam("userId") userId: String) {
-        userInfoService.deleteUser(userId);
+        userInfoService.deleteUser(userId)
     }
 }
