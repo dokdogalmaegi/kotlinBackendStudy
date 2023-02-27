@@ -16,7 +16,7 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         val (userId: String, username: String, password: String, email: String) = userInfoSignUpVO
 
         if (userInfoRepository.existsByUserId(userId)) {
-            throw Error("exists User ID")
+            throw RuntimeException("exists User ID")
         }
 
         val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
