@@ -39,7 +39,7 @@ class UserInfoServiceImplTest() {
     @Order(1)
     @Test
     fun `Success sign in new user`() {
-        assertEquals(userInfoServiceImpl.loginUser(userInfo.userId, userInfo.password), true)
+        assertEquals(userInfoServiceImpl.isExistsUserByUserId(userInfo.userId), true)
     }
 
     @Order(2)

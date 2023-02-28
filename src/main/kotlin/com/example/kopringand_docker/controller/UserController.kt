@@ -17,10 +17,14 @@ class UserController(private val userInfoService: UserInfoService) {
     }
 
     @PostMapping("/isExistsUser")
-    fun isExistsUser(@RequestBody userInfoLoginVO: UserInfoLoginVO): Boolean {
-        val (userId: String, password: String) = userInfoLoginVO
+    fun isExistsUser(@RequestBody user: HashMap<String, Object>): ResponseVO {
+        val userId: String = user["userId"].toString()
 
-        return userInfoService.loginUser(userId, password)
+        return try {
+            SuccessResponseVO("Success search $userId", userInfoService.isExistsUserByUserId(userId))
+        } catch (e: RuntimeException) {
+            FailResponseVO("Fail search $userId", e.message.toString())
+        }
     }
 
     @PostMapping("/signUp")

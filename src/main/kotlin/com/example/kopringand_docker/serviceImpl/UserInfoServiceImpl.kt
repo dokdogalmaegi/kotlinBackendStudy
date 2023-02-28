@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : UserInfoService {
     override fun getUserList() = userInfoRepository.findAll()
 
-    override fun loginUser(userId: String, password: String) = userInfoRepository.existsByUserIdAndPassword(userId, password)
+    override fun isExistsUserByUserId(userId: String) = userInfoRepository.existsByUserId(userId)
 
     override fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
         val (userId: String, username: String, password: String, email: String) = userInfoSignUpVO
