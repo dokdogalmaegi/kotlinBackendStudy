@@ -1,6 +1,5 @@
 package com.example.kopringand_docker.controller
 
-import com.example.kopringand_docker.entity.UserInfo
 import com.example.kopringand_docker.service.UserInfoService
 import com.example.kopringand_docker.vo.*
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,8 +11,12 @@ import java.lang.RuntimeException
 @RestController
 class UserController(private val userInfoService: UserInfoService) {
     @GetMapping("/userInfoList")
-    fun getUserInfoList(): List<UserInfo> {
-        return userInfoService.getUserList()
+    fun getUserInfoList(): ResponseVO {
+        return try {
+            SuccessResponseVO("Success selected user info list", userInfoService.getUserList())
+        } catch (e: RuntimeException) {
+            FailResponseVO("Fail selected user info list", e.message.toString())
+        }
     }
 
     @PostMapping("/isExistsUser")
