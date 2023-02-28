@@ -7,8 +7,10 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.lang.RuntimeException
 
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation::class)
 @SpringBootTest
@@ -29,7 +31,7 @@ class UserInfoServiceImplTest() {
     @Test
     @Order(0)
     fun `Success sign up new user`() {
-        org.junit.jupiter.api.assertDoesNotThrow {
+        assertDoesNotThrow {
             userInfoServiceImpl.signUp(userInfo)
         }
     }
@@ -37,13 +39,17 @@ class UserInfoServiceImplTest() {
     @Order(1)
     @Test
     fun `Success sign in new user`() {
-        assertEquals(userInfoServiceImpl.loginUser(userInfo.userId, userInfo.password), true)
+        assertEquals(userInfoServiceImpl.isExistsUserByUserId(userInfo.userId), true)
     }
 
     @Order(2)
     @Test
     fun `Fail sign up same userId User`() {
-        assertEquals(true, true)
+        try {
+            userInfoServiceImpl.signUp(userInfo)
+        } catch (e: RuntimeException) {
+            assertEquals("Exists user id", e.message.toString())
+        }
     }
 
     @Order(3)
@@ -64,7 +70,7 @@ class UserInfoServiceImplTest() {
     fun `Success delete testUser`() {
         val savedTestUserInfo: UserInfo = userInfoServiceImpl.getUserByUserId(userInfo.userId)
 
-        org.junit.jupiter.api.assertDoesNotThrow {
+        assertDoesNotThrow {
             userInfoServiceImpl.deleteUser(savedTestUserInfo.userId)
         }
     }

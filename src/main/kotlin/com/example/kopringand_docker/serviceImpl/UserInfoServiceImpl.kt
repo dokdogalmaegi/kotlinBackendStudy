@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service
 class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : UserInfoService {
     override fun getUserList() = userInfoRepository.findAll()
 
-    override fun loginUser(userId: String, password: String) = userInfoRepository.existsByUserIdAndPassword(userId, password)
+    override fun isExistsUserByUserId(userId: String) = userInfoRepository.existsByUserId(userId)
 
     override fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo {
         val (userId: String, username: String, password: String, email: String) = userInfoSignUpVO
 
         if (userInfoRepository.existsByUserId(userId)) {
-            throw Error("exists User ID")
+            throw RuntimeException("Exists user id")
         }
 
         val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
@@ -25,8 +25,11 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
     }
 
     override fun deleteUser(userId: String) {
-        val selectedUserInfo: UserInfo = getUserByUserId(userId)
+        if (!userInfoRepository.existsByUserId(userId)) {
+            throw RuntimeException("Not exists user id")
+        }
 
+        val selectedUserInfo: UserInfo = getUserByUserId(userId)
         userInfoRepository.delete(selectedUserInfo)
     }
 

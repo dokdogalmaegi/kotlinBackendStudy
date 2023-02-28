@@ -6,7 +6,7 @@ import com.example.kopringand_docker.vo.UserInfoSignUpVO
 interface UserInfoService {
     fun getUserList(): List<UserInfo>
 
-    fun loginUser(userId: String, password: String): Boolean
+    fun isExistsUserByUserId(userId: String): Boolean
 
     fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo
 
