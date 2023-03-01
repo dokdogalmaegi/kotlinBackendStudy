@@ -32,10 +32,7 @@ class AdminController(private val userInfoService: UserInfoService) {
         val username = user["username"].toString()
 
         return try {
-            val beforeUsername = "test";
-            val afterUsername = "test2"
-
-            SuccessResponseVO("Success change username of $userId", beforeUsername)
+            SuccessResponseVO("Success change username of $userId", userInfoService.changeUsername(userId, username))
         } catch (e: RuntimeException) {
             FailResponseVO("Fail change username of $userId", e.message.toString())
         }
