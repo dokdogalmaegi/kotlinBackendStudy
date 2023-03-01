@@ -12,5 +12,7 @@ interface UserInfoService {
 
     fun deleteUser(userId: String)
 
+    fun changeUsername(userId: String, changeUsername: String): HashMap<String, String>
+
     fun getUserByUserId(userId: String): UserInfo
 }
