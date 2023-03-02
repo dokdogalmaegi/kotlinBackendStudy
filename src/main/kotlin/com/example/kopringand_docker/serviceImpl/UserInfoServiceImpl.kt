@@ -33,5 +33,18 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         userInfoRepository.delete(selectedUserInfo)
     }
 
+    override fun changeUsername(userId: String, changeUsername: String): HashMap<String, String> {
+        val returnHashMap: HashMap<String, String> = HashMap()
+
+        return returnHashMap.apply {
+            val beforeUser = getUserByUserId(userId)
+            put("beforeUsername", beforeUser.username)
+
+            val afterUser = beforeUser.changeUsername(changeUsername)
+            userInfoRepository.save(afterUser)
+            put("afterUsername", afterUser.username)
+        }
+    }
+
     override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId)
 }

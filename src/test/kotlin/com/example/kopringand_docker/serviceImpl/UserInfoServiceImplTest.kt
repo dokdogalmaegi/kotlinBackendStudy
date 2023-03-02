@@ -21,6 +21,8 @@ class UserInfoServiceImplTest() {
 
     private val userInfo: UserInfoSignUpVO = UserInfoSignUpVO("testUser", "testNewUser", "testPassword", "test@gamil.com")
 
+    private val beChangedUsername: String = "testUpdateUser"
+
     @Test
     fun `check exists data in USER_INFO Table`() {
         val isExistsUserList = userInfoServiceImpl.getUserList().size > 0
@@ -66,6 +68,27 @@ class UserInfoServiceImplTest() {
     }
 
     @Order(4)
+    @Test
+    fun `Success changeUsername`() {
+        assertDoesNotThrow {
+            val changeUsernameResult = userInfoServiceImpl.changeUsername(userInfo.userId, beChangedUsername)
+
+            assertEquals(userInfo.username, changeUsernameResult["beforeUsername"])
+            assertEquals(beChangedUsername, changeUsernameResult["afterUsername"])
+        }
+    }
+
+    @Order(5)
+    @Test
+    fun `Fail changeUsername from same username`() {
+        try {
+            userInfoServiceImpl.changeUsername(userInfo.userId, beChangedUsername)
+        } catch (e: RuntimeException) {
+            assertEquals(e.message.toString(), "Must be different param and instance username")
+        }
+    }
+
+    @Order(6)
     @Test
     fun `Success delete testUser`() {
         val savedTestUserInfo: UserInfo = userInfoServiceImpl.getUserByUserId(userInfo.userId)

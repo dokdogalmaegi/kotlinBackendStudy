@@ -15,9 +15,9 @@ import java.time.Instant
 )
 class UserInfo(
     @Column(unique = true) val userId: String,
-    @Column val username: String,
-    @Column val password: String,
-    @Column val email: String,
+    @Column var username: String,
+    @Column var password: String,
+    @Column var email: String,
 ) {
     @Id
     @GeneratedValue(
@@ -32,4 +32,15 @@ class UserInfo(
 
     @Column
     var lastLogin: Instant? = null
+
+    operator fun component1(): String = this.username
+
+    fun changeUsername(changeUsername: String): UserInfo {
+        if (changeUsername == this.username) {
+            throw RuntimeException("Must be different param and instance username")
+        }
+
+        this.username = changeUsername
+        return this
+    }
 }
