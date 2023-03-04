@@ -1,10 +1,13 @@
 package com.example.kopringand_docker.serviceImpl
 
 import com.example.kopringand_docker.entity.UserInfo
+import com.example.kopringand_docker.entity.getEncryptionOf
 import com.example.kopringand_docker.repository.UserInfoRepository
 import com.example.kopringand_docker.service.UserInfoService
+import com.example.kopringand_docker.vo.UserInfoLoginVO
 import com.example.kopringand_docker.vo.UserInfoSignUpVO
 import org.springframework.stereotype.Service
+import java.lang.Exception
 
 @Service
 class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : UserInfoService {
@@ -22,6 +25,16 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
 
         return userInfoRepository.save(userInfoEntity)
+    }
+
+    override fun signIn(userId: String, password: String): Boolean {
+        return try {
+            val encryptedPassword: String = getEncryptionOf(password)
+
+            userInfoRepository.existsByUserIdAndPassword(userId, encryptedPassword)
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override fun deleteUser(userId: String) {

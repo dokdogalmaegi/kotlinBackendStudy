@@ -1,6 +1,7 @@
 package com.example.kopringand_docker.service
 
 import com.example.kopringand_docker.entity.UserInfo
+import com.example.kopringand_docker.vo.UserInfoLoginVO
 import com.example.kopringand_docker.vo.UserInfoSignUpVO
 
 interface UserInfoService {
@@ -9,6 +10,8 @@ interface UserInfoService {
     fun isExistsUserByUserId(userId: String): Boolean
 
     fun signUp(userInfoSignUpVO: UserInfoSignUpVO): UserInfo
+
+    fun signIn(userId: String, password: String): Boolean
 
     fun deleteUser(userId: String)
 
