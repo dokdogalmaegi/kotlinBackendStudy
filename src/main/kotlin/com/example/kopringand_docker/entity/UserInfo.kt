@@ -43,4 +43,22 @@ class UserInfo(
         this.username = changeUsername
         return this
     }
+
+    fun changePassword(changePassword: String): UserInfo {
+        if (changePassword == this.password) {
+            throw RuntimeException("Must be different param and instance passwrod")
+        }
+
+        this.password = changePassword
+        return this
+    }
+
+    fun changeUserEmail(changeUserEmail: String): UserInfo {
+        if (changeUserEmail == this.email) {
+            throw RuntimeException("Must be different param and instance email")
+        }
+
+        this.email = changeUserEmail
+        return this
+    }
 }

@@ -37,4 +37,16 @@ class AdminController(private val userInfoService: UserInfoService) {
             FailResponseVO("Fail change username of $userId", e.message.toString())
         }
     }
+
+    @PostMapping("/updateUserEmail")
+    fun updateUserEmail(@RequestBody user: HashMap<String, Object>): ResponseVO {
+        val userId = user["userId"].toString()
+        val email = user["email"].toString()
+
+        return try {
+            SuccessResponseVO("Success change userEmail of $userId", true)
+        } catch (e: RuntimeException) {
+            FailResponseVO("Fail change userEmail of $userId", e.message.toString())
+        }
+    }
 }
