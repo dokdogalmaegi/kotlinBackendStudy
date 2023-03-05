@@ -9,9 +9,9 @@ import java.util.Base64
 
 fun getEncryptionOf(password: String): String {
     val md = MessageDigest.getInstance("SHA-512")
-    md.update(password.toByte())
+    md.update(password.toByteArray())
 
-    return Base64.getEncoder().encode(md.digest()).toString()
+    return Base64.getEncoder().encodeToString(md.digest())
 }
 
 @Entity

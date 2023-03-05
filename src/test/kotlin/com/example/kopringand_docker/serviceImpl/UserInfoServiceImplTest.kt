@@ -1,6 +1,7 @@
 package com.example.kopringand_docker.serviceImpl
 
 import com.example.kopringand_docker.entity.UserInfo
+import com.example.kopringand_docker.entity.getEncryptionOf
 import com.example.kopringand_docker.vo.UserInfoSignUpVO
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.MethodOrderer
@@ -41,7 +42,7 @@ class UserInfoServiceImplTest() {
     @Order(1)
     @Test
     fun `Success sign in new user`() {
-        assertEquals(userInfoServiceImpl.isExistsUserByUserId(userInfo.userId), true)
+        assertEquals(userInfoServiceImpl.signIn(userInfo.userId, getEncryptionOf(userInfo.password)), true)
     }
 
     @Order(2)

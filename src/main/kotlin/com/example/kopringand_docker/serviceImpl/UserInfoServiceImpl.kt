@@ -22,7 +22,8 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
             throw RuntimeException("Exists user id")
         }
 
-        val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
+        val encryptedPassword = getEncryptionOf(password)
+        val userInfoEntity: UserInfo = UserInfo(userId, username, encryptedPassword, email)
 
         return userInfoRepository.save(userInfoEntity)
     }
