@@ -40,4 +40,17 @@ class UserController(private val userInfoService: UserInfoService) {
             FailResponseVO("Fail sign up $userId", e.message.toString())
         }
     }
+
+    @PostMapping("/signIn")
+    fun signIn(@RequestBody userInfoLoginVO: UserInfoLoginVO): ResponseVO {
+        val (userId: String, password: String) = userInfoLoginVO
+
+        val isSuccessLogin = userInfoService.signIn(userId, password)
+
+        return if (isSuccessLogin) {
+            SuccessResponseVO("Success login of $userId", true)
+        } else {
+            FailResponseVO("Fail login of $userId", "Fail login")
+        }
+    }
 }

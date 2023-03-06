@@ -1,10 +1,12 @@
 package com.example.kopringand_docker.serviceImpl
 
 import com.example.kopringand_docker.entity.UserInfo
+import com.example.kopringand_docker.entity.getEncryptionOf
 import com.example.kopringand_docker.repository.UserInfoRepository
 import com.example.kopringand_docker.service.UserInfoService
 import com.example.kopringand_docker.vo.UserInfoSignUpVO
 import org.springframework.stereotype.Service
+import java.lang.Exception
 
 @Service
 class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : UserInfoService {
@@ -19,9 +21,20 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
             throw RuntimeException("Exists user id")
         }
 
-        val userInfoEntity: UserInfo = UserInfo(userId, username, password, email)
+        val encryptedPassword = getEncryptionOf(password)
+        val userInfoEntity: UserInfo = UserInfo(userId, username, encryptedPassword, email)
 
         return userInfoRepository.save(userInfoEntity)
+    }
+
+    override fun signIn(userId: String, password: String): Boolean {
+        return try {
+            val encryptedPassword: String = getEncryptionOf(password)
+
+            userInfoRepository.existsByUserIdAndPassword(userId, encryptedPassword)
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override fun deleteUser(userId: String) {
@@ -33,17 +46,44 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         userInfoRepository.delete(selectedUserInfo)
     }
 
-    override fun changeUsername(userId: String, changeUsername: String): HashMap<String, String> {
+    override fun changeUserInfo(userId: String, username: String?, password: String?, email: String?): HashMap<String, String> {
         val returnHashMap: HashMap<String, String> = HashMap()
 
         return returnHashMap.apply {
             val beforeUser = getUserByUserId(userId)
-            put("beforeUsername", beforeUser.username)
 
-            val afterUser = beforeUser.changeUsername(changeUsername)
-            userInfoRepository.save(afterUser)
-            put("afterUsername", afterUser.username)
+            if (username != null) {
+                put("beforeUsername", beforeUser.username)
+                beforeUser.changeUsername(username)
+                put("afterUsername", username)
+            }
+            
+            if (password != null) {
+                put("beforePassword", beforeUser.password)
+                beforeUser.changePassword(password)
+                put("afterPassword", password)
+            }
+
+            if (email != null) {
+                put("beforeEmail", beforeUser.email)
+                beforeUser.changeUserEmail(email)
+                put("afterEmail", email)
+            }
+
+            userInfoRepository.save(beforeUser)
         }
+    }
+
+    override fun changeUsername(userId: String, username: String): HashMap<String, String> {
+        return changeUserInfo(userId, username, null, null)
+    }
+
+    override fun changeUserPassword(userId: String, password: String): HashMap<String, String> {
+        return changeUserInfo(userId, null, password, null)
+    }
+
+    override fun changeUserEmail(userId: String, email: String): HashMap<String, String> {
+        return changeUserInfo(userId, null, null, email)
     }
 
     override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId)

@@ -3,7 +3,16 @@ package com.example.kopringand_docker.entity
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
+import java.security.MessageDigest
 import java.time.Instant
+import java.util.Base64
+
+fun getEncryptionOf(password: String): String {
+    val md = MessageDigest.getInstance("SHA-512")
+    md.update(password.toByteArray())
+
+    return Base64.getEncoder().encodeToString(md.digest())
+}
 
 @Entity
 @EntityListeners(AuditingEntityListener::class)
@@ -41,6 +50,25 @@ class UserInfo(
         }
 
         this.username = changeUsername
+        return this
+    }
+
+    fun changePassword(changePassword: String): UserInfo {
+        val encryptedPassword = getEncryptionOf(changePassword)
+        if (encryptedPassword == this.password) {
+            throw RuntimeException("Must be different param and instance password")
+        }
+
+        this.password = encryptedPassword
+        return this
+    }
+
+    fun changeUserEmail(changeUserEmail: String): UserInfo {
+        if (changeUserEmail == this.email) {
+            throw RuntimeException("Must be different param and instance email")
+        }
+
+        this.email = changeUserEmail
         return this
     }
 }
