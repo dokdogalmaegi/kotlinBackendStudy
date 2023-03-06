@@ -52,11 +52,15 @@ class UserInfoServiceImplTest() {
     @Order(2)
     @Test
     fun `Fail sign up same userId User`() {
+        var errorMessage: String = ""
+
         try {
             userInfoServiceImpl.signUp(userInfo)
         } catch (e: RuntimeException) {
-            assertEquals("Exists user id", e.message.toString())
+            errorMessage = e.message.toString()
         }
+
+        assertEquals(errorMessage, "Exists user id")
     }
 
     @Order(3)
@@ -86,11 +90,16 @@ class UserInfoServiceImplTest() {
     @Order(5)
     @Test
     fun `Fail changeUsername from same username`() {
+        var errorMessage: String = ""
+
         try {
             userInfoServiceImpl.changeUsername(userInfo.userId, beChangedUsername)
         } catch (e: RuntimeException) {
+            errorMessage = e.message.toString()
             assertEquals(e.message.toString(), "Must be different param and instance username")
         }
+
+        assertEquals(errorMessage, "Must be different param and instance username")
     }
 
     @Order(6)
@@ -107,11 +116,15 @@ class UserInfoServiceImplTest() {
     @Order(7)
     @Test
     fun `Fail changeUserEmail from same user password`() {
+        var errorMessage: String = ""
+
         try {
             userInfoServiceImpl.changeUserPassword(userInfo.userId, beChangedUserPassword)
         } catch (e: RuntimeException) {
-            assertEquals(e.message.toString(), "Must be different param and instance password")
+            errorMessage = e.message.toString()
         }
+
+        assertEquals(errorMessage, "Must be different param and instance password")
     }
 
     @Order(8)
@@ -128,11 +141,15 @@ class UserInfoServiceImplTest() {
     @Order(9)
     @Test
     fun `Fail changeUserEmail from same user email`() {
+        var errorMessage: String = ""
+
         try {
             userInfoServiceImpl.changeUserEmail(userInfo.userId, beChangedUserEmail)
         } catch (e: RuntimeException) {
-            assertEquals(e.message.toString(), "Must be different param and instance email")
+            errorMessage = e.message.toString()
         }
+
+        assertEquals(errorMessage, "Must be different param and instance email")
     }
 
     @Order(10)
