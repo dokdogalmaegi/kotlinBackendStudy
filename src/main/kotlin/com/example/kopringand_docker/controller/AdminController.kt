@@ -55,7 +55,7 @@ class AdminController(private val userInfoService: UserInfoService) {
         val email = user["email"].toString()
 
         return try {
-            SuccessResponseVO("Success change userEmail of $userId", true)
+            SuccessResponseVO("Success change userEmail of $userId", userInfoService.changeUserEmail(userId, email))
         } catch (e: RuntimeException) {
             FailResponseVO("Fail change userEmail of $userId", e.message.toString())
         }
