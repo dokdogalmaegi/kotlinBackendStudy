@@ -16,5 +16,11 @@ interface UserInfoService {
 
     fun changeUserInfo(userId: String, username: String?, password: String?, email: String?): HashMap<String, String>
 
+    fun changeUsername(userId: String, username: String): HashMap<String, String>
+
+    fun changeUserPassword(userId: String, password: String): HashMap<String, String>
+
+    fun changeUserEmail(userId: String, email: String): HashMap<String, String>
+
     fun getUserByUserId(userId: String): UserInfo
 }

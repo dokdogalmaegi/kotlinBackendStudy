@@ -31,9 +31,21 @@ class AdminController(private val userInfoService: UserInfoService) {
         val username = user["username"].toString()
 
         return try {
-            SuccessResponseVO("Success change username of $userId", userInfoService.changeUserInfo(userId, username, null, null))
+            SuccessResponseVO("Success change username of $userId", userInfoService.changeUsername(userId, username))
         } catch (e: RuntimeException) {
             FailResponseVO("Fail change username of $userId", e.message.toString())
+        }
+    }
+
+    @PostMapping("/updateUserPassword")
+    fun updateUserPassword(@RequestBody user: HashMap<String, Object>): ResponseVO {
+        val userId = user["userId"].toString()
+        val password = user["password"].toString()
+
+        return try {
+            SuccessResponseVO("Success change password of $userId", userInfoService.changeUserPassword(userId, password))
+        } catch (e: RuntimeException) {
+            FailResponseVO("Fail change user password of $userId", e.message.toString())
         }
     }
 

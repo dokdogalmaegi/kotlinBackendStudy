@@ -74,5 +74,17 @@ class UserInfoServiceImpl(private val userInfoRepository: UserInfoRepository) : 
         }
     }
 
+    override fun changeUsername(userId: String, username: String): HashMap<String, String> {
+        return changeUserInfo(userId, username, null, null)
+    }
+
+    override fun changeUserPassword(userId: String, password: String): HashMap<String, String> {
+        return changeUserInfo(userId, null, password, null)
+    }
+
+    override fun changeUserEmail(userId: String, email: String): HashMap<String, String> {
+        return changeUserInfo(userId, null, null, email)
+    }
+
     override fun getUserByUserId(userId: String) = userInfoRepository.findByUserId(userId)
 }

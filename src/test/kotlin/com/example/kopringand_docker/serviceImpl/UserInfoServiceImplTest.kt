@@ -76,7 +76,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Success changeUsername`() {
         assertDoesNotThrow {
-            val changeUsernameResult = userInfoServiceImpl.changeUserInfo(userInfo.userId, beChangedUsername, null, null)
+            val changeUsernameResult = userInfoServiceImpl.changeUsername(userInfo.userId, beChangedUsername)
 
             assertEquals(userInfo.username, changeUsernameResult["beforeUsername"])
             assertEquals(beChangedUsername, changeUsernameResult["afterUsername"])
@@ -87,7 +87,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Fail changeUsername from same username`() {
         try {
-            userInfoServiceImpl.changeUserInfo(userInfo.userId, beChangedUsername, null, null)
+            userInfoServiceImpl.changeUsername(userInfo.userId, beChangedUsername)
         } catch (e: RuntimeException) {
             assertEquals(e.message.toString(), "Must be different param and instance username")
         }
@@ -97,7 +97,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Success changeUserPassword`() {
         assertDoesNotThrow {
-            val changeUsernameResult = userInfoServiceImpl.changeUserInfo(userInfo.userId, null, beChangedUserPassword, null)
+            val changeUsernameResult = userInfoServiceImpl.changeUserPassword(userInfo.userId, beChangedUserPassword)
 
             assertEquals(getEncryptionOf(userInfo.password), changeUsernameResult["beforePassword"])
             assertEquals(beChangedUserPassword, changeUsernameResult["afterPassword"])
@@ -108,7 +108,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Fail changeUserEmail from same user password`() {
         try {
-            userInfoServiceImpl.changeUserInfo(userInfo.userId, null, beChangedUserPassword, null)
+            userInfoServiceImpl.changeUserPassword(userInfo.userId, beChangedUserPassword)
         } catch (e: RuntimeException) {
             assertEquals(e.message.toString(), "Must be different param and instance password")
         }
@@ -118,7 +118,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Success changeUserEmail`() {
         assertDoesNotThrow {
-            val changeUsernameResult = userInfoServiceImpl.changeUserInfo(userInfo.userId, null, null, beChangedUserEmail)
+            val changeUsernameResult = userInfoServiceImpl.changeUserEmail(userInfo.userId, beChangedUserEmail)
 
             assertEquals(userInfo.email, changeUsernameResult["beforeEmail"])
             assertEquals(beChangedUserEmail, changeUsernameResult["afterEmail"])
@@ -129,7 +129,7 @@ class UserInfoServiceImplTest() {
     @Test
     fun `Fail changeUserEmail from same user email`() {
         try {
-            userInfoServiceImpl.changeUserInfo(userInfo.userId, null, null, beChangedUserEmail)
+            userInfoServiceImpl.changeUserEmail(userInfo.userId, beChangedUserEmail)
         } catch (e: RuntimeException) {
             assertEquals(e.message.toString(), "Must be different param and instance email")
         }
@@ -138,10 +138,8 @@ class UserInfoServiceImplTest() {
     @Order(10)
     @Test
     fun `Success delete testUser`() {
-        val savedTestUserInfo: UserInfo = userInfoServiceImpl.getUserByUserId(userInfo.userId)
-
         assertDoesNotThrow {
-            userInfoServiceImpl.deleteUser(savedTestUserInfo.userId)
+            userInfoServiceImpl.deleteUser(userInfo.userId)
         }
     }
 }

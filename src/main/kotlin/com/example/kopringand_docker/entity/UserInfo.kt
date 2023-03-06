@@ -54,11 +54,12 @@ class UserInfo(
     }
 
     fun changePassword(changePassword: String): UserInfo {
-        if (changePassword == this.password) {
+        val encryptedPassword = getEncryptionOf(changePassword)
+        if (encryptedPassword == this.password) {
             throw RuntimeException("Must be different param and instance password")
         }
 
-        this.password = getEncryptionOf(changePassword)
+        this.password = encryptedPassword
         return this
     }
 
