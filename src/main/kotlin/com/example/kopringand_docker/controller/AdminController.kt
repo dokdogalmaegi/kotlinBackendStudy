@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.lang.Exception
 import java.lang.RuntimeException
 
 @RestController
@@ -32,7 +31,7 @@ class AdminController(private val userInfoService: UserInfoService) {
         val username = user["username"].toString()
 
         return try {
-            SuccessResponseVO("Success change username of $userId", userInfoService.changeUsername(userId, username))
+            SuccessResponseVO("Success change username of $userId", userInfoService.changeUserInfo(userId, username, null, null))
         } catch (e: RuntimeException) {
             FailResponseVO("Fail change username of $userId", e.message.toString())
         }

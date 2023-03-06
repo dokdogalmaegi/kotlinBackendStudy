@@ -55,7 +55,7 @@ class UserInfo(
 
     fun changePassword(changePassword: String): UserInfo {
         if (changePassword == this.password) {
-            throw RuntimeException("Must be different param and instance passwrod")
+            throw RuntimeException("Must be different param and instance password")
         }
 
         this.password = getEncryptionOf(changePassword)
